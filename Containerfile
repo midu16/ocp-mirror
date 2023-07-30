@@ -76,6 +76,6 @@ VOLUME /home/admin/.docker
 VOLUME /app/cluster-oprators
 
 # Set the entrypoint of the container to /bin/bash
- CMD ["/bin/bash"]
-#CMD ["/bin/bash", "/imageset/template_imageset_config.sh", "${OC_VERSION}"]
+ CMD ["/usr/local/bin/oc-mirror", "--config", "/imageset/imageset-config.yaml", "file:///app/cluster-oprators"]
+#CMD ["/bin/bash"]
 
