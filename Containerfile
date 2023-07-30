@@ -4,6 +4,10 @@ FROM docker.io/library/fedora:38
 # Set the maintainer 
 MAINTAINER midu@redhat.com
 
+# Use ARG to specify build-time arguments (optional)
+ARG OC_VERSION=="4.12.21"
+ARG OC_MIRROR_VERSION="4.12.21"
+
 # Set the working directory
 WORKDIR /app
 
@@ -11,14 +15,6 @@ WORKDIR /app
 RUN useradd -ms /bin/bash admin
 # Adding the admin user to 'sudo' group
 RUN usermod -a -G root admin
-
-# Set environment variables for OpenShift client version and download URLs
-ENV OC_VERSION="4.12.21"
-ENV OC_MIRROR_VERSION="4.12.21"
-
-# Use ARG to specify build-time arguments (optional)
-ARG OC_VERSION
-ARG OC_MIRROR_VERSION
 
 # Use the ENV instruction to set environment variables during the build process
 # These values will be replaced with the build-time ARGs if provided, otherwise
@@ -33,7 +29,7 @@ ENV OC_MIRROR_DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients
 
 # Install necessary tools (wget, tar)
 RUN yum update -y && \
-    yum install -y wget tar git make gcc findutils go-srpm-macros golang
+    yum install -y wget tar git
 
 # Download oc, kubeadm, and oc-mirror binaries
 RUN wget -O /app/oc.tar.gz ${OC_DOWNLOAD_URL} && \
@@ -52,6 +48,14 @@ ENV PATH="/usr/local/bin:${PATH}"
 # Cleanup unnecessary files
 RUN rm -rf /app/*
 
+# switching to /root $HOME
+WORKDIR /imageset
+
+# Creating the automation that is generating the cluster-operator bundle release
+COPY template_imageset_config.sh /imageset/template_imageset_config.sh
+# RUN chmod +x /app/template_imageset_config.sh
+RUN echo ${OC_VERSION} && /imageset/template_imageset_config.sh ${OC_VERSION}  
+
 # Adding the user admin to 'sudo' group
 RUN usermod -a -G root admin
 
@@ -65,11 +69,6 @@ USER admin
 # Switching to admin $HOME
 WORKDIR /home/admin
 
-# Creating the automation that is generating the cluster-operator bundle release 
-COPY template_imageset_config.sh /app/template_imageset_config.sh
-RUN chmod +x /app/template_imageset_config.sh
-
-
 # Creating the mountpoint of .docker for config.json
 VOLUME /home/admin/.docker
 
@@ -77,4 +76,6 @@ VOLUME /home/admin/.docker
 VOLUME /app/cluster-oprators
 
 # Set the entrypoint of the container to /bin/bash
-CMD ["/bin/bash"]
+ CMD ["/bin/bash"]
+#CMD ["/bin/bash", "/imageset/template_imageset_config.sh", "${OC_VERSION}"]
+
