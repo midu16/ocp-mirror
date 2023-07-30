@@ -39,4 +39,6 @@ uploading: file://openshift/release sha256:5477f9bc8ede42fb3546f4de907c52750efd4
 
 As it can be seen in the above output, the mirroring process has started.
 
+## Public build:
 
+For the above example, the image its made available publically here: `quay.io/midu/oc_kubeadm_mirror:v4.12.25` . 
