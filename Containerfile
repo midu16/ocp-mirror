@@ -48,6 +48,8 @@ ENV PATH="/usr/local/bin:${PATH}"
 # Cleanup unnecessary files
 RUN rm -rf /app/*
 
+RUN chmod 775 /app
+
 # switching to /root $HOME
 WORKDIR /imageset
 
@@ -64,7 +66,7 @@ RUN mkdir -p /etc/sudoers.d/ && echo "admin ALL=(ALL) NOPASSWD: ALL" > /etc/sudo
 RUN chmod 044 /etc/sudoers.d/admin
 
 # Switching to admin user
-USER admin
+#USER admin
 
 # Switching to admin $HOME
 WORKDIR /home/admin
@@ -73,9 +75,12 @@ WORKDIR /home/admin
 VOLUME /home/admin/.docker
 
 # creating the mountpoint of mirroring process for cluster operators and day2-operators
-VOLUME /app/cluster-oprators
+VOLUME /cluster-operators
+
+# 
+ENV DOCKER_CONFIG="/home/admin/.docker"
 
 # Set the entrypoint of the container to /bin/bash
- CMD ["/usr/local/bin/oc-mirror", "--config", "/imageset/imageset-config.yaml", "file:///app/cluster-oprators"]
+ CMD ["/usr/local/bin/oc-mirror", "--config", "/imageset/imageset-config.yaml", "file:///cluster-operators/cluster-operators"]
 #CMD ["/bin/bash"]
 

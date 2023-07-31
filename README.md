@@ -10,7 +10,7 @@ $ podman build -t oc_kubeadmin_mirror --build-arg OC_VERSION="4.12.25" --build-a
 ## How to run manually the container-base image
 
 ```bash
-$ podman run -d --rm -it --name oc_mirror --net="host" --ipc=host -v /home/midu/.docker:/home/admin/.docker:z -v /app:/app/cluster-operators:z oc_kubeadmin_mirror:latest
+$ podman run -d --rm -it --name oc_mirror --net="host" --ipc=host -v /home/midu/.docker:/home/admin/.docker:z -v /app:/cluster-operators:z oc_kubeadmin_mirror:latest
 ```
 
 ## System behaviour
@@ -37,8 +37,18 @@ uploading: file://openshift/release sha256:7a5d2c452f387fe325f5f27d3fdc7698cd68a
 uploading: file://openshift/release sha256:5477f9bc8ede42fb3546f4de907c52750efd4433de56cfecaa8216b9c08d694c 31.89MiB
 ```
 
-As it can be seen in the above output, the mirroring process has started.
+As it can be seen in the above output, the mirroring process has started. Once the mirroring process its finished, the host output its the following:
 
+```bash
+$ ls -l /app/cluster-operators/
+total 17046764
+-rw-r--r-- 1 midu midu 4165533696 Jul 31 16:41 mirror_seq1_000000.tar
+-rw-r--r-- 1 midu midu 3261229056 Jul 31 16:41 mirror_seq1_000001.tar
+-rw-r--r-- 1 midu midu 4240603136 Jul 31 16:41 mirror_seq1_000002.tar
+-rw-r--r-- 1 midu midu 4289592320 Jul 31 16:41 mirror_seq1_000003.tar
+-rw-r--r-- 1 midu midu 1498921984 Jul 31 16:41 mirror_seq1_000004.tar
+drwxr-xr-x 2 midu midu          6 Jul 31 16:41 oc-mirror-workspace
+```
 ## Public build:
 
 For the above example, the image its made available publically here: `quay.io/midu/oc_kubeadm_mirror:v4.12.25` . 
