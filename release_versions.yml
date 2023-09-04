@@ -1,0 +1,33 @@
+---
+23R3:
+  ocp-release: "4.12.21"
+  day2-operators:
+    du:
+      cincinnati-operator: "5.0.1"
+      cluster-logging: "5.7.2"
+      lvms-operator: "4.12.1"
+      ptp-operator: "4.12.0-202305270029"
+      sriov-network-operator: "4.12.0-202306031829"
+    cu:
+      elasticsearch-operator: "5.7.2"
+      local-storage-operator: "4.12.0-202305262042"
+      mcg-operator: "4.12.4-rhodf"
+      ocs-operator: "4.12.4-rhodf"
+      odf-operator: "4.12.4-rhodf"
+
+
+23R4:
+  ocp-release: "4.12.29"
+  day2-operators:
+    du:
+      cincinnati-operator: "5.0.1"
+      cluster-logging: "5.7.4"
+      lvms-operator: "4.12.1"
+      ptp-operator: "4.12.0-202307262354"
+      sriov-network-operator: "4.12.0-202307270623"
+    cu:
+      elasticsearch-operator: "5.7.4"
+      local-storage-operator: "4.12.0-202307182142"
+      mcg-operator: "4.12.5-rhodf"
+      ocs-operator: "4.12.5-rhodf"
+      odf-operator: "4.12.5-rhodf"
